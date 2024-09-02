@@ -226,48 +226,6 @@ function removeType(type) {
     }
 }
 
-function randomPattern() {
-    var randomInteger = randomInt(1, 3);
-    var randomPixel = "";
-
-    for (let i = 0; i < backgroundPixels.length; i++) {
-        backgroundPixels[i].type = sky;
-    }
-
-    if (randomInt(0, 1) == 0) {
-        randomPixel = sand;
-    } else {
-        randomPixel = water;
-    }
-
-    if (randomInteger == 1) {
-        randomLength = randomInt(0, backgroundPixels.length);
-        for (let i = 0; i < randomLength; i++) {
-            backgroundPixels[i].type = randomPixel;
-        }
-    }
-
-    if (randomInteger == 2) {
-        for (let i = 0; i < backgroundPixels.length; i++) {
-            if (randomInt(0, 1) == 0) {
-                backgroundPixels[i].type = sand;
-            } else {
-                backgroundPixels[i].type = water;
-            }
-        }
-    }
-
-    if (randomInteger == 3) {
-        for (let i = 0; i < (backgroundPixels.length / 2); i++) {
-            if (i.toString().includes(1)) {
-                backgroundPixels[i].type = sand;
-            } else {
-                backgroundPixels[i].type = water;
-            }
-        }
-    }
-
-}
 
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
