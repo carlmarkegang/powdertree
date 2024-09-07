@@ -5,7 +5,8 @@ var wall = 4;
 var seed = 5;
 var tree_base = 6;
 var tree_roots = 7;
-var tree_leafs = 7;
+var tree_leafs = 8;
+var tree_height = 0;
 
 var backgroundPixels = [];
 var quality = 60;
@@ -76,6 +77,14 @@ function draw() {
             fill(color(230, 199, 147));
         }
 
+        if (backgroundPixels[i].type == tree_roots) {
+            fill(color(135, 121, 103));
+        }
+
+        if (backgroundPixels[i].type == tree_leafs) {
+            fill(color(82, 163, 20));
+        }
+
         if (mouseIsPressed) {
             if (floor(mouseX) == backgroundPixels[i].x && floor(mouseY) == backgroundPixels[i].y && selectedType > 0) {
                 backgroundPixels[i].type = selectedType;
@@ -111,6 +120,7 @@ function updatePixelsPos() {
         var pixelRight = getPixelAround[2];
         var pixelUnderLeft = getPixelAround[3];
         var pixelUnderRight = getPixelAround[4];
+        var pixelAbove = getPixelAround[5];
 
 
         if (backgroundPixels[i].type == dirt) {
@@ -175,8 +185,6 @@ function updatePixelsPos() {
                     continue;
                 }
             }
-
-
         }
 
         if (backgroundPixels[i].type == seed) {
@@ -190,13 +198,62 @@ function updatePixelsPos() {
 
             if (pixelUnder.type == dirt) {
                 backgroundPixels[i].type = tree_base;
+                pixelUnder.type = tree_roots;
+                continue;
+            }
+        }
+
+
+    }
+}
+
+
+function updateTree() {
+    for (let i = 0; i < backgroundPixels.length; i++) {
+        backgroundPixels[i].updatedInCycle = false;
+    }
+
+    for (let i = 0; i < backgroundPixels.length; i++) {
+
+        if (backgroundPixels[i].type == sky) {
+            continue;
+        }
+
+        if (backgroundPixels[i].updatedInCycle == true) {
+            continue;
+        }
+
+        var getPixelAround = getPixelsAround(backgroundPixels[i]);
+        var pixelUnder = getPixelAround[0];
+        var pixelLeft = getPixelAround[1];
+        var pixelRight = getPixelAround[2];
+        var pixelUnderLeft = getPixelAround[3];
+        var pixelUnderRight = getPixelAround[4];
+        var pixelAbove = getPixelAround[5];
+
+
+
+        if (backgroundPixels[i].type == tree_roots) {
+            if (pixelUnder.type == dirt) {
+                pixelUnder.type = tree_roots;
+                pixelUnder.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+        }
+
+        if (backgroundPixels[i].type == tree_base) {
+            if (pixelAbove.type == sky) {
+                if (tree_height < 17) {
+                    pixelAbove.type = tree_base;
+                    pixelAbove.updatedInCycle = true;
+                    backgroundPixels[i].updatedInCycle = true;
+                    tree_height++;
+                }
                 continue;
             }
         }
     }
-
-
-
 }
 
 function getPixelsAround(backgroundPixel) {
@@ -241,12 +298,18 @@ function getPixelsAround(backgroundPixel) {
             }
         }
 
-        if (PixelArray[0] != undefined && PixelArray[1] != undefined && PixelArray[2] != undefined && PixelArray[3] != undefined && PixelArray[4] != undefined) {
+        if ((backgroundPixel.y - 1) == backgroundPixels[i2].y && backgroundPixel.x == backgroundPixels[i2].x) {
+            if (backgroundPixels[i2].updatedInCycle == false) {
+                PixelArray[5] = backgroundPixels[i2];
+            }
+        }
+
+        if (PixelArray[0] != undefined && PixelArray[1] != undefined && PixelArray[2] != undefined && PixelArray[3] != undefined && PixelArray[4] != undefined && PixelArray[5] != undefined) {
             continue;
         }
     }
 
-    for (let i2 = 0; i2 < 5; i2++) {
+    for (let i2 = 0; i2 < 6; i2++) {
         if (PixelArray[i2] == undefined) {
             PixelArray[i2] = [];
         }
@@ -264,3 +327,5 @@ function randomInt(min, max) {
 
 
 updatePixelsPos();
+
+setInterval(updateTree, 500);
