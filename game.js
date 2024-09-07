@@ -7,6 +7,9 @@ var tree_base = 6;
 var tree_roots = 7;
 var tree_leafs = 8;
 var tree_height = 0;
+var tree_max_height = randomInt(20, 30);
+var tree_width = 0;
+var tree_max_width = randomInt(2, 3) * tree_max_height;
 
 var backgroundPixels = [];
 var quality = 60;
@@ -240,17 +243,75 @@ function updateTree() {
                 backgroundPixels[i].updatedInCycle = true;
                 continue;
             }
+
+            if (randomInt(0, 1) == 0) {
+                if (pixelUnderLeft.type == dirt) {
+                    pixelUnderLeft.type = tree_roots;
+                    pixelUnderLeft.updatedInCycle = true;
+                    backgroundPixels[i].updatedInCycle = true;
+                    continue;
+                }
+            } else {
+                if (pixelUnderRight.type == dirt) {
+                    pixelUnderRight.type = tree_roots;
+                    pixelUnderRight.updatedInCycle = true;
+                    backgroundPixels[i].updatedInCycle = true;
+                    continue;
+                }
+            }
         }
 
         if (backgroundPixels[i].type == tree_base) {
-            if (pixelAbove.type == sky) {
-                if (tree_height < 17) {
+            if (tree_height <= tree_max_height) {
+                if (pixelAbove.type == sky) {
                     pixelAbove.type = tree_base;
                     pixelAbove.updatedInCycle = true;
                     backgroundPixels[i].updatedInCycle = true;
                     tree_height++;
+                    continue;
                 }
+            }
+
+            if (pixelUnder.type == sky) {
+                pixelUnder.type = tree_base;
+                pixelUnder.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
                 continue;
+            }
+
+            if (pixelUnder.type == dirt) {
+                pixelUnder.type = tree_roots;
+                pixelUnder.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+
+            if (tree_width < tree_max_width && tree_height >= tree_max_height) {
+                if (pixelLeft.type == sky) {
+                    pixelLeft.type = tree_base;
+                    pixelLeft.updatedInCycle = true;
+                    backgroundPixels[i].updatedInCycle = true;
+                    tree_width++;
+                    continue;
+                }
+
+                if (pixelRight.type == sky) {
+                    pixelRight.type = tree_base;
+                    pixelRight.updatedInCycle = true;
+                    backgroundPixels[i].updatedInCycle = true;
+                    tree_width++;
+                    continue;
+                }
+            }
+
+            if (tree_height >= tree_max_height) {
+                if (pixelAbove.type == sky) {
+                    pixelAbove.type = tree_leafs;
+                    pixelAbove.updatedInCycle = true;
+                    backgroundPixels[i].updatedInCycle = true;
+                    tree_height++;
+                    continue;
+                }
             }
         }
     }
