@@ -4,6 +4,8 @@ var water = 3;
 var wall = 4;
 var seed = 5;
 var tree_base = 6;
+var tree_roots = 7;
+var tree_leafs = 7;
 
 var backgroundPixels = [];
 var quality = 60;
