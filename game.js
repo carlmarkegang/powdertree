@@ -1,11 +1,13 @@
 var sky = 1;
-var sand = 2;
+var dirt = 2;
 var water = 3;
 var wall = 4;
+var seed = 5;
+var tree_base = 6;
 
 var backgroundPixels = [];
 var quality = 60;
-var selectedType = sand;
+var selectedType = 5;
 
 
 
@@ -30,6 +32,15 @@ function setup() {
             backgroundPixels.push(new create_backgroundPixel(x, y, sky));
         }
     }
+
+    for (let i = 0; i < backgroundPixels.length; i++) {
+        if (backgroundPixels[i].y > quality - 15) {
+            if (randomInt(0, 1) == 1) {
+                backgroundPixels[i].type = dirt;
+            }
+        }
+    }
+
     frameRate(20);
 }
 
@@ -40,11 +51,11 @@ function draw() {
 
     for (let i = 0; i < backgroundPixels.length; i++) {
         if (backgroundPixels[i].type == sky) {
-            fill(color(137, 207, 240));
+            fill(color(181, 229, 245));
         }
 
-        if (backgroundPixels[i].type == sand) {
-            fill(color(218, 247, 166));
+        if (backgroundPixels[i].type == dirt) {
+            fill(color(84, 69, 18));
         }
 
         if (backgroundPixels[i].type == water) {
@@ -55,9 +66,18 @@ function draw() {
             fill(color(50, 50, 50));
         }
 
+        if (backgroundPixels[i].type == seed) {
+            fill(color(82, 163, 20));
+        }
+
+        if (backgroundPixels[i].type == tree_base) {
+            fill(color(230, 199, 147));
+        }
+
         if (mouseIsPressed) {
-            if (floor(mouseX) == backgroundPixels[i].x && floor(mouseY) == backgroundPixels[i].y) {
+            if (floor(mouseX) == backgroundPixels[i].x && floor(mouseY) == backgroundPixels[i].y && selectedType > 0) {
                 backgroundPixels[i].type = selectedType;
+                selectedType = 0;
             }
         }
 
@@ -91,9 +111,9 @@ function updatePixelsPos() {
         var pixelUnderRight = getPixelAround[4];
 
 
-        if (backgroundPixels[i].type == sand) {
+        if (backgroundPixels[i].type == dirt) {
             if (pixelUnder.type == sky) {
-                pixelUnder.type = sand;
+                pixelUnder.type = dirt;
                 backgroundPixels[i].type = sky;
                 pixelUnder.updatedInCycle = true;
                 backgroundPixels[i].updatedInCycle = true;
@@ -101,15 +121,15 @@ function updatePixelsPos() {
             }
 
             if (pixelUnder.type == water) {
-                pixelUnder.type = sand;
+                pixelUnder.type = dirt;
                 backgroundPixels[i].type = water;
                 pixelUnder.updatedInCycle = true;
                 backgroundPixels[i].updatedInCycle = true;
                 continue;
             }
 
-            if (pixelUnder.type == sand && pixelLeft.type == sky && pixelUnderLeft.type == sky) {
-                pixelUnderLeft.type = sand;
+            if (pixelUnder.type == dirt && pixelLeft.type == sky && pixelUnderLeft.type == sky) {
+                pixelUnderLeft.type = dirt;
                 backgroundPixels[i].type = sky;
                 pixelUnderLeft.updatedInCycle = true;
                 backgroundPixels[i].updatedInCycle = true;
@@ -117,8 +137,8 @@ function updatePixelsPos() {
             }
 
 
-            if (pixelUnder.type == sand && pixelRight.type == sky && pixelUnderRight.type == sky) {
-                pixelUnderRight.type = sand;
+            if (pixelUnder.type == dirt && pixelRight.type == sky && pixelUnderRight.type == sky) {
+                pixelUnderRight.type = dirt;
                 backgroundPixels[i].type = sky;
                 pixelUnderRight.updatedInCycle = true;
                 backgroundPixels[i].updatedInCycle = true;
@@ -155,6 +175,21 @@ function updatePixelsPos() {
             }
 
 
+        }
+
+        if (backgroundPixels[i].type == seed) {
+            if (pixelUnder.type == sky) {
+                pixelUnder.type = seed;
+                backgroundPixels[i].type = sky;
+                pixelUnder.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+
+            if (pixelUnder.type == dirt) {
+                backgroundPixels[i].type = tree_base;
+                continue;
+            }
         }
     }
 
@@ -218,26 +253,10 @@ function getPixelsAround(backgroundPixel) {
     return PixelArray;
 }
 
-function removeType(type) {
-    for (let i = 0; i < backgroundPixels.length; i++) {
-        if (backgroundPixels[i].type == type) {
-            backgroundPixels[i].type = sky;
-        }
-    }
-}
 
 
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
-}
-
-function changeSelectedType(changeSelectedType, thisElement) {
-    selectedType = changeSelectedType;
-    var selectedTypeButtons = document.querySelectorAll('.selectedTypeButton');
-    selectedTypeButtons.forEach(element => {
-        element.style.background = "rgb(240, 240, 240)";
-    });
-    thisElement.style.background = "lightgreen";
 }
 
 

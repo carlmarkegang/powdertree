@@ -22,21 +22,10 @@
 
 <body>
     <script src="game.js"></script>
-    <div>Hold mouse down to add sand, water or walls</div>
+    <div>Hold mouse down to add dirt, water or walls</div>
 
     <div id="sketch-holder">
         <!-- Our sketch will go here! -->
-      </div>
-
-      <div><button onclick="changeSelectedType(sand, this)" class="selectedTypeButton">Sand</button><button onclick="changeSelectedType(water, this)" class="selectedTypeButton">Water</button><button onclick="changeSelectedType(wall, this)" class="selectedTypeButton">Wall</button><button onclick="changeSelectedType(sky, this)" class="selectedTypeButton">Erase</button></div>
-      <div><button onclick="removeType(sand)">Remove all Sand</button><button onclick="removeType(water)">Remove all Water</button><button onclick="removeType(wall)">Remove all wall</button></div>
-
-      <div>Quality:
-        <div>
-            30<input type="radio" name="Quality" onclick="quality = 30;setup();">
-            60<input type="radio" name="Quality" onclick="quality = 60;setup();" checked>
-            80<input type="radio" name="Quality" onclick="quality = 80;setup();">
-        </div>
       </div>
 </body>
 
