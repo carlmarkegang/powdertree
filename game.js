@@ -5,7 +5,10 @@ var wall = 4;
 var seed = 5;
 var tree_base = 6;
 var tree_roots = 7;
-var tree_leafs = 8;
+var tree_leafs_base = 8;
+var tree_leafs_1 = 9;
+var tree_leafs_2 = 10;
+var tree_leafs_3 = 11;
 var tree_height = 0;
 var tree_max_height = randomInt(20, 30);
 var tree_width = 0;
@@ -84,7 +87,19 @@ function draw() {
             fill(color(135, 121, 103));
         }
 
-        if (backgroundPixels[i].type == tree_leafs) {
+        if (backgroundPixels[i].type == tree_leafs_base) {
+            fill(color(82, 163, 20));
+        }
+
+        if (backgroundPixels[i].type == tree_leafs_1) {
+            fill(color(82, 163, 20));
+        }
+
+        if (backgroundPixels[i].type == tree_leafs_2) {
+            fill(color(82, 163, 20));
+        }
+
+        if (backgroundPixels[i].type == tree_leafs_3) {
             fill(color(82, 163, 20));
         }
 
@@ -306,12 +321,81 @@ function updateTree() {
 
             if (tree_height >= tree_max_height) {
                 if (pixelAbove.type == sky) {
-                    pixelAbove.type = tree_leafs;
+                    pixelAbove.type = tree_leafs_base;
                     pixelAbove.updatedInCycle = true;
                     backgroundPixels[i].updatedInCycle = true;
                     tree_height++;
                     continue;
                 }
+            }
+        }
+
+        if (backgroundPixels[i].type == tree_leafs_base) {
+            if (pixelAbove.type == sky) {
+                pixelAbove.type = tree_leafs_1;
+                pixelAbove.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+
+            if (pixelRight.type == sky) {
+                pixelRight.type = tree_leafs_1;
+                pixelRight.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+
+            if (pixelLeft.type == sky) {
+                pixelLeft.type = tree_leafs_1;
+                pixelLeft.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+        }
+
+        if (backgroundPixels[i].type == tree_leafs_1) {
+            if (pixelAbove.type == sky) {
+                pixelAbove.type = tree_leafs_2;
+                pixelAbove.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+
+            if (pixelRight.type == sky) {
+                pixelRight.type = tree_leafs_2;
+                pixelRight.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+
+            if (pixelLeft.type == sky) {
+                pixelLeft.type = tree_leafs_2;
+                pixelLeft.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+        }
+
+        if (backgroundPixels[i].type == tree_leafs_2) {
+            if (pixelAbove.type == sky) {
+                pixelAbove.type = tree_leafs_3;
+                pixelAbove.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+
+            if (pixelRight.type == sky) {
+                pixelRight.type = tree_leafs_3;
+                pixelRight.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
+            }
+
+            if (pixelLeft.type == sky) {
+                pixelLeft.type = tree_leafs_3;
+                pixelLeft.updatedInCycle = true;
+                backgroundPixels[i].updatedInCycle = true;
+                continue;
             }
         }
     }
